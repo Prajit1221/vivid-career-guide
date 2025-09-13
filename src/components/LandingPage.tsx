@@ -2,6 +2,7 @@ import { ArrowRight, Users, Target, Briefcase, Star, Upload, FileText, Search } 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "./ThemeToggle";
 import heroImage from "@/assets/hero-students.jpg";
 
 const LandingPage = () => {
@@ -19,11 +20,12 @@ const LandingPage = () => {
             <h1 className="text-2xl font-bold text-primary">PragatiSetu</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <select className="bg-transparent border border-border rounded-lg px-3 py-2 text-sm">
+            <select className="bg-card border border-border rounded-lg px-3 py-2 text-sm">
               <option>English</option>
               <option>हिन्दी</option>
               <option>मराठी</option>
             </select>
+            <ThemeToggle />
           </div>
         </div>
       </nav>
@@ -49,7 +51,7 @@ const LandingPage = () => {
               <Button 
                 size="lg" 
                 className="gradient-primary hover-glow text-lg px-8 py-6 shadow-medium"
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate("/profile-development")}
               >
                 Get Started <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -178,7 +180,7 @@ const LandingPage = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-6 shadow-medium"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/profile-development")}
             >
               Create Your Profile <ArrowRight className="ml-2 w-5 h-5" />
             </Button>

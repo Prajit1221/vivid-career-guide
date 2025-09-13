@@ -1,98 +1,55 @@
 import { useState } from "react";
-import { ArrowRight, ArrowLeft, User, GraduationCap, Code, MapPin, Briefcase } from "lucide-react";
+import { ArrowLeft, User, Settings, Bell, Globe, Volume2, Palette, Save, Edit2, Camera, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [activeTab, setActiveTab] = useState("profile");
   const [profile, setProfile] = useState({
-    education: "",
-    field: "",
-    skills: [] as string[],
-    sectors: [] as string[],
-    location: "",
+    name: "Alex Johnson",
+    email: "alex.johnson@email.com",
+    phone: "+91 98765 43210",
+    location: "Mumbai, Maharashtra",
+    bio: "Computer Science student passionate about web development and AI. Looking for internship opportunities to grow my skills.",
+    education: "Undergraduate (3rd Year)",
+    field: "Computer Science & IT",
+    skills: ["JavaScript", "React", "Python", "Problem Solving"],
+    experience: "Fresher",
+    dateOfBirth: "2002-05-15",
+    linkedin: "linkedin.com/in/alexjohnson",
+    github: "github.com/alexjohnson"
   });
 
-  const educationLevels = [
-    "12th Grade",
-    "Diploma",
-    "Undergraduate (1st Year)",
-    "Undergraduate (2nd Year)", 
-    "Undergraduate (3rd Year)",
-    "Graduate",
-    "Post Graduate"
-  ];
+  const [preferences, setPreferences] = useState({
+    emailNotifications: true,
+    pushNotifications: false,
+    language: "english",
+    textToSpeech: false,
+    highContrast: false,
+    accessibility: false
+  });
 
-  const fields = [
-    "Computer Science & IT",
-    "Electronics & Engineering", 
-    "Mechanical Engineering",
-    "Civil Engineering",
-    "Business & Management",
-    "Commerce & Finance",
-    "Arts & Humanities",
-    "Science & Research",
-    "Medical & Healthcare",
-    "Other"
-  ];
-
-  const availableSkills = [
-    "JavaScript", "Python", "Java", "C++", "React", "Node.js",
-    "Communication", "Leadership", "Problem Solving", "Teamwork",
-    "Data Analysis", "Project Management", "Marketing", "Design",
-    "Writing", "Public Speaking", "Research", "Microsoft Office"
-  ];
-
-  const sectors = [
-    { name: "Information Technology", icon: "💻" },
-    { name: "Healthcare", icon: "🏥" },
-    { name: "Education", icon: "🎓" },
-    { name: "Finance & Banking", icon: "🏦" },
-    { name: "Manufacturing", icon: "🏭" },
-    { name: "Retail & E-commerce", icon: "🛒" },
-    { name: "Media & Entertainment", icon: "🎬" },
-    { name: "Government", icon: "🏛️" },
-    { name: "Non-Profit", icon: "❤️" },
-    { name: "Startups", icon: "🚀" }
-  ];
-
-  const locations = [
-    "Delhi NCR", "Mumbai", "Bangalore", "Hyderabad", "Chennai",
-    "Pune", "Kolkata", "Ahmedabad", "Jaipur", "Remote Work"
-  ];
-
-  const toggleSkill = (skill: string) => {
-    setProfile(prev => ({
-      ...prev,
-      skills: prev.skills.includes(skill)
-        ? prev.skills.filter(s => s !== skill)
-        : [...prev.skills, skill]
-    }));
+  const handleSave = () => {
+    // Save logic would go here
+    alert("Profile updated successfully!");
   };
 
-  const toggleSector = (sector: string) => {
-    setProfile(prev => ({
-      ...prev,
-      sectors: prev.sectors.includes(sector)
-        ? prev.sectors.filter(s => s !== sector)
-        : [...prev.sectors, sector]
-    }));
-  };
-
-  const nextStep = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  };
-
-  const handleComplete = () => {
-    navigate("/recommendations");
-  };
+  const tabs = [
+    { id: "profile", label: "Personal Info", icon: User },
+    { id: "preferences", label: "Preferences", icon: Settings },
+    { id: "notifications", label: "Notifications", icon: Bell },
+    { id: "accessibility", label: "Accessibility", icon: Palette },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,262 +64,332 @@ const Profile = () => {
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Home</span>
           </Button>
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 gradient-primary rounded-md flex items-center justify-center">
-              <User className="w-3 h-3 text-white" />
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-6 h-6 gradient-primary rounded-md flex items-center justify-center">
+                <User className="w-3 h-3 text-white" />
+              </div>
+              <h1 className="text-xl font-semibold">Profile Settings</h1>
             </div>
-            <h1 className="text-xl font-semibold">Create Profile</h1>
+            <ThemeToggle />
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        {/* Progress Indicator */}
-        <div className="flex items-center justify-center mb-12">
-          <div className="flex items-center space-x-4">
-            {[1, 2, 3, 4].map((step) => (
-              <div key={step} className="flex items-center">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
-                    step <= currentStep
-                      ? "gradient-primary text-white shadow-glow"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {step}
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="grid lg:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <Card className="gradient-card border-0 shadow-soft sticky top-8">
+              <CardContent className="p-6">
+                {/* Profile Avatar */}
+                <div className="text-center mb-6">
+                  <div className="relative inline-block">
+                    <Avatar className="w-20 h-20 mx-auto">
+                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarFallback className="gradient-primary text-white text-xl">
+                        {profile.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button
+                      size="sm"
+                      className="absolute -bottom-2 -right-2 rounded-full w-8 h-8 p-0 gradient-secondary"
+                    >
+                      <Camera className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <h3 className="text-lg font-semibold mt-3">{profile.name}</h3>
+                  <p className="text-sm text-muted-foreground">{profile.education}</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => navigate("/profile-development")}
+                  >
+                    <Edit2 className="w-3 h-3 mr-2" />
+                    Edit Profile
+                  </Button>
                 </div>
-                {step < 4 && (
-                  <div
-                    className={`w-16 h-1 ml-4 ${
-                      step < currentStep ? "gradient-primary" : "bg-muted"
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
+
+                {/* Navigation Tabs */}
+                <div className="space-y-2">
+                  {tabs.map((tab) => (
+                    <Button
+                      key={tab.id}
+                      variant={activeTab === tab.id ? "default" : "ghost"}
+                      className={`w-full justify-start ${
+                        activeTab === tab.id ? "gradient-primary" : ""
+                      }`}
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      <tab.icon className="w-4 h-4 mr-3" />
+                      {tab.label}
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </div>
 
-        <div className="animate-slide-up">
-          {currentStep === 1 && (
-            <Card className="gradient-card border-0 shadow-soft">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <GraduationCap className="w-8 h-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Education & Field</CardTitle>
-                <p className="text-muted-foreground">Tell us about your educational background</p>
-              </CardHeader>
-              <CardContent className="space-y-8">
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold">Education Level</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {educationLevels.map((level) => (
-                      <Button
-                        key={level}
-                        variant={profile.education === level ? "default" : "outline"}
-                        className={`text-left justify-start p-4 h-auto ${
-                          profile.education === level ? "gradient-primary" : "hover-lift"
-                        }`}
-                        onClick={() => setProfile(prev => ({ ...prev, education: level }))}
-                      >
-                        {level}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold">Field of Study</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {fields.map((field) => (
-                      <Button
-                        key={field}
-                        variant={profile.field === field ? "default" : "outline"}
-                        className={`text-left justify-start p-4 h-auto ${
-                          profile.field === field ? "gradient-secondary" : "hover-lift"
-                        }`}
-                        onClick={() => setProfile(prev => ({ ...prev, field }))}
-                      >
-                        {field}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {currentStep === 2 && (
-            <Card className="gradient-card border-0 shadow-soft">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 gradient-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Code className="w-8 h-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Skills & Expertise</CardTitle>
-                <p className="text-muted-foreground">
-                  Select your skills or add custom ones
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold">Select Your Skills</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {availableSkills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        variant={profile.skills.includes(skill) ? "default" : "outline"}
-                        className={`cursor-pointer px-4 py-2 text-sm ${
-                          profile.skills.includes(skill)
-                            ? "gradient-primary text-white"
-                            : "hover:bg-primary/10"
-                        }`}
-                        onClick={() => toggleSkill(skill)}
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {profile.skills.length > 0 && (
-                  <div className="space-y-2">
-                    <h5 className="font-medium">Selected Skills:</h5>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.skills.map((skill) => (
-                        <Badge key={skill} className="gradient-primary">
-                          {skill}
-                        </Badge>
-                      ))}
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {activeTab === "profile" && (
+              <div className="space-y-6">
+                <Card className="gradient-card border-0 shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <User className="w-5 h-5" />
+                      <span>Personal Information</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input
+                          id="name"
+                          value={profile.name}
+                          onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
+                          className="bg-background"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id="email"
+                            type="email"
+                            value={profile.email}
+                            onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                            className="pl-10 bg-background"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id="phone"
+                            value={profile.phone}
+                            onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
+                            className="pl-10 bg-background"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="dob">Date of Birth</Label>
+                        <div className="relative">
+                          <Calendar className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id="dob"
+                            type="date"
+                            value={profile.dateOfBirth}
+                            onChange={(e) => setProfile(prev => ({ ...prev, dateOfBirth: e.target.value }))}
+                            className="pl-10 bg-background"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
 
-          {currentStep === 3 && (
-            <Card className="gradient-card border-0 shadow-soft">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-warning to-success rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Briefcase className="w-8 h-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Industry Interests</CardTitle>
-                <p className="text-muted-foreground">
-                  Which sectors interest you the most?
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {sectors.map((sector) => (
-                    <Button
-                      key={sector.name}
-                      variant={profile.sectors.includes(sector.name) ? "default" : "outline"}
-                      className={`h-20 flex flex-col items-center justify-center space-y-2 ${
-                        profile.sectors.includes(sector.name)
-                          ? "gradient-hero text-white"
-                          : "hover-lift"
-                      }`}
-                      onClick={() => toggleSector(sector.name)}
-                    >
-                      <span className="text-2xl">{sector.icon}</span>
-                      <span className="text-sm text-center leading-tight">{sector.name}</span>
-                    </Button>
-                  ))}
-                </div>
-
-                {profile.sectors.length > 0 && (
-                  <div className="space-y-2">
-                    <h5 className="font-medium">Selected Industries:</h5>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.sectors.map((sector) => (
-                        <Badge key={sector} className="gradient-secondary">
-                          {sector}
-                        </Badge>
-                      ))}
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location</Label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="location"
+                          value={profile.location}
+                          onChange={(e) => setProfile(prev => ({ ...prev, location: e.target.value }))}
+                          className="pl-10 bg-background"
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
 
-          {currentStep === 4 && (
-            <Card className="gradient-card border-0 shadow-soft">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-warning rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <MapPin className="w-8 h-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Location Preference</CardTitle>
-                <p className="text-muted-foreground">
-                  Where would you like to work?
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {locations.map((location) => (
-                    <Button
-                      key={location}
-                      variant={profile.location === location ? "default" : "outline"}
-                      className={`p-4 h-auto ${
-                        profile.location === location ? "gradient-primary" : "hover-lift"
-                      }`}
-                      onClick={() => setProfile(prev => ({ ...prev, location }))}
-                    >
-                      {location}
-                    </Button>
-                  ))}
-                </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bio">Bio</Label>
+                      <Textarea
+                        id="bio"
+                        value={profile.bio}
+                        onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
+                        className="min-h-[100px] bg-background"
+                        placeholder="Tell us about yourself..."
+                      />
+                    </div>
 
-                {profile.location && (
-                  <div className="text-center p-4 bg-success/10 rounded-lg border border-success/20">
-                    <p className="text-success font-medium">
-                      ✓ Location preference: {profile.location}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="linkedin">LinkedIn Profile</Label>
+                        <Input
+                          id="linkedin"
+                          value={profile.linkedin}
+                          onChange={(e) => setProfile(prev => ({ ...prev, linkedin: e.target.value }))}
+                          className="bg-background"
+                          placeholder="linkedin.com/in/username"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="github">GitHub Profile</Label>
+                        <Input
+                          id="github"
+                          value={profile.github}
+                          onChange={(e) => setProfile(prev => ({ ...prev, github: e.target.value }))}
+                          className="bg-background"
+                          placeholder="github.com/username"
+                        />
+                      </div>
+                    </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={prevStep}
-              disabled={currentStep === 1}
-              className="px-8"
-            >
-              <ArrowLeft className="mr-2 w-4 h-4" />
-              Previous
-            </Button>
-
-            {currentStep < 4 ? (
-              <Button
-                size="lg"
-                onClick={nextStep}
-                className="gradient-primary hover-glow px-8"
-                disabled={
-                  (currentStep === 1 && (!profile.education || !profile.field)) ||
-                  (currentStep === 2 && profile.skills.length === 0) ||
-                  (currentStep === 3 && profile.sectors.length === 0)
-                }
-              >
-                Next
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            ) : (
-              <Button
-                size="lg"
-                onClick={handleComplete}
-                className="gradient-secondary hover-glow px-8"
-                disabled={!profile.location}
-              >
-                Complete Profile
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+                    <div className="space-y-4">
+                      <Label>Current Skills</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {profile.skills.map((skill, index) => (
+                          <Badge key={index} className="gradient-primary">
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate("/profile-development")}
+                      >
+                        Update Skills & Preferences
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
+
+            {activeTab === "preferences" && (
+              <Card className="gradient-card border-0 shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Settings className="w-5 h-5" />
+                    <span>App Preferences</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label htmlFor="language">Language</Label>
+                        <p className="text-sm text-muted-foreground">Choose your preferred language</p>
+                      </div>
+                      <Select value={preferences.language} onValueChange={(value) => setPreferences(prev => ({ ...prev, language: value }))}>
+                        <SelectTrigger className="w-[180px] bg-background">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border border-border z-50">
+                          <SelectItem value="english">English</SelectItem>
+                          <SelectItem value="hindi">हिन्दी</SelectItem>
+                          <SelectItem value="marathi">मराठी</SelectItem>
+                          <SelectItem value="gujarati">ગુજરાતી</SelectItem>
+                          <SelectItem value="bengali">বাংলা</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label htmlFor="tts">Text-to-Speech</Label>
+                        <p className="text-sm text-muted-foreground">Enable voice reading for accessibility</p>
+                      </div>
+                      <Switch
+                        id="tts"
+                        checked={preferences.textToSpeech}
+                        onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, textToSpeech: checked }))}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {activeTab === "notifications" && (
+              <Card className="gradient-card border-0 shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Bell className="w-5 h-5" />
+                    <span>Notification Settings</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label htmlFor="email-notif">Email Notifications</Label>
+                        <p className="text-sm text-muted-foreground">Receive internship updates via email</p>
+                      </div>
+                      <Switch
+                        id="email-notif"
+                        checked={preferences.emailNotifications}
+                        onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, emailNotifications: checked }))}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label htmlFor="push-notif">Push Notifications</Label>
+                        <p className="text-sm text-muted-foreground">Get instant alerts for new opportunities</p>
+                      </div>
+                      <Switch
+                        id="push-notif"
+                        checked={preferences.pushNotifications}
+                        onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, pushNotifications: checked }))}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {activeTab === "accessibility" && (
+              <Card className="gradient-card border-0 shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Palette className="w-5 h-5" />
+                    <span>Accessibility Options</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label htmlFor="contrast">High Contrast Mode</Label>
+                        <p className="text-sm text-muted-foreground">Increase contrast for better visibility</p>
+                      </div>
+                      <Switch
+                        id="contrast"
+                        checked={preferences.highContrast}
+                        onCheckedChange={(checked) => setPreferences(prev => ({ ...prev, highContrast: checked }))}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Theme Selection</Label>
+                        <p className="text-sm text-muted-foreground">Choose your preferred theme</p>
+                      </div>
+                      <ThemeToggle />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Save Button */}
+            <div className="flex justify-end">
+              <Button
+                size="lg"
+                className="gradient-primary hover-glow px-8"
+                onClick={handleSave}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
           </div>
         </div>
       </div>
