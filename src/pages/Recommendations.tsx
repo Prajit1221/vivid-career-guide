@@ -92,11 +92,11 @@ const Recommendations = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Button 
             variant="ghost" 
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/")}
             className="flex items-center space-x-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back</span>
+            <span>Back to Home</span>
           </Button>
           <div className="flex items-center space-x-2">
             <div className="w-6 h-6 gradient-secondary rounded-md flex items-center justify-center">
